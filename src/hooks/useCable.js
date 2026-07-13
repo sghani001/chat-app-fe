@@ -9,7 +9,9 @@ export function useCable() {
     const token = getToken()
     if (!token) return
 
-    const consumer = createConsumer(`ws://localhost:3000/cable?token=${token}`)
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const host = window.location.host
+    const consumer = createConsumer(`${protocol}//${host}/cable?token=${token}`)
     consumerRef.current = consumer
 
     return () => {
