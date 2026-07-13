@@ -39,10 +39,10 @@ function Sidebar({ user, channels, conversations, activeView, onSelectChannel, o
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <div className="sidebar-logo">V</div>
+        <div className="sidebar-logo">N</div>
         <div className="sidebar-brand-text">
-          <span className="sidebar-brand-name">Versacc</span>
-          <span className="sidebar-brand-version">v2.0.1 · build 4716</span>
+          <span className="sidebar-brand-name">Nuro</span>
+          <span className="sidebar-brand-version">v1.0.0</span>
         </div>
       </div>
 

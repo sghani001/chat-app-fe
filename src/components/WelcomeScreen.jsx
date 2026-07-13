@@ -8,7 +8,7 @@ function WelcomeScreen({ user }) {
 
   return (
     <div className="welcome-screen">
-      <div className="welcome-logo">V</div>
+      <div className="welcome-logo">N</div>
       <h1>Welcome back, {user.name}</h1>
       <p className="welcome-sub">Select a conversation to start chatting</p>
       <div className="welcome-features">
