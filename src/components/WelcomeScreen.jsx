@@ -2,8 +2,8 @@ function WelcomeScreen({ user }) {
   const features = [
     { icon: '#', color: 'teal', text: 'Channel Conversations', desc: 'Group discussions by topic' },
     { icon: '@', color: 'blue', text: 'Direct Messages', desc: 'Private one-on-one chats' },
-    { icon: '!', color: 'teal', text: 'Real-time Notifications', desc: 'Instant alerts via WebSocket' },
-    { icon: '~', color: 'blue', text: 'Unread Tracking', desc: 'Badges & highlights for new messages' },
+    { icon: '~', color: 'teal', text: 'Real-time Messaging', desc: 'Instant delivery via WebSocket' },
+    { icon: '!', color: 'blue', text: 'Toast Alerts', desc: 'Popups & unread badges' },
   ]
 
   return (

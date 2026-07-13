@@ -1,5 +1,15 @@
 import { useEffect, useRef } from 'react'
 
+function highlightMentions(text) {
+  const parts = text.split(/(@\w+)/g)
+  return parts.map((part, i) => {
+    if (part.startsWith('@') && part.length > 1) {
+      return <span key={i} className="mention-highlight">{part}</span>
+    }
+    return part
+  })
+}
+
 function MessageList({ messages, activeUser }) {
   const bottomRef = useRef(null)
 
@@ -29,7 +39,7 @@ function MessageList({ messages, activeUser }) {
             </div>
             <div className="message-bubble">
               {!isMe && <div className="message-sender">{m.user?.name}</div>}
-              <div className="message-text">{m.content}</div>
+              <div className="message-text">{highlightMentions(m.content)}</div>
               <div className="message-time">
                 {m.created_at ? new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
               </div>

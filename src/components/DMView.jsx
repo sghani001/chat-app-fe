@@ -38,7 +38,7 @@ function DMView({ conversationId, otherUser, user, cable, onMessage }) {
         <div className="chat-header-sub">Direct Message</div>
       </div>
       <MessageList messages={messages} activeUser={user} />
-      <MessageInput placeholder={`Message @${otherUser?.name}...`} onSend={handleSend} />
+      <MessageInput placeholder={`Message @${otherUser?.name}...`} onSend={handleSend} currentUserId={user.id} />
     </div>
   )
 }

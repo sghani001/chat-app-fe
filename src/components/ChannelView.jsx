@@ -38,7 +38,7 @@ function ChannelView({ channelId, channelName, user, cable, onMessage }) {
         <div className="chat-header-sub">Channel</div>
       </div>
       <MessageList messages={messages} activeUser={user} />
-      <MessageInput placeholder={`Message #${channelName}...`} onSend={handleSend} />
+      <MessageInput placeholder={`Message #${channelName}...`} onSend={handleSend} currentUserId={user.id} />
     </div>
   )
 }
