@@ -28,7 +28,8 @@ export async function api(path, options = {}) {
 
 export async function apiJson(path, options = {}) {
   const res = await api(path, options)
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error || 'Request failed')
+  const text = await res.text()
+  const data = text ? JSON.parse(text) : {}
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`)
   return data
 }
