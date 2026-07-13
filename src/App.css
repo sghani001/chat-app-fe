@@ -938,12 +938,26 @@
   box-shadow: 0 24px 64px rgba(0,0,0,0.2);
 }
 
-.auth-card .sidebar-logo {
-  margin: 0 auto 16px;
+.auth-card .auth-header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.auth-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.auth-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  font-size: 22px;
+  background: linear-gradient(135deg, var(--teal), var(--blue));
+  font-size: 24px;
 }
 
 .auth-card h1 {
@@ -951,14 +965,26 @@
   font-size: 22px;
   font-weight: 700;
   color: var(--text-heading);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
-.auth-card .auth-sub {
+.auth-card .auth-subtitle {
   text-align: center;
   font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-card .auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .auth-card .auth-error {
@@ -967,15 +993,12 @@
   font-size: 13px;
   padding: 10px 14px;
   border-radius: var(--radius-md);
-  margin-bottom: 16px;
 }
 
 .auth-card form label {
-  display: block;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-heading);
-  margin-bottom: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -988,7 +1011,6 @@
   font-size: 14px;
   color: var(--text-heading);
   background: var(--main-bg);
-  margin-bottom: 16px;
   transition: border-color 0.15s;
 }
 
@@ -1006,25 +1028,31 @@
   color: #fff;
   font-size: 14px;
   font-weight: 700;
-  margin-top: 4px;
 }
 
 .auth-card form button[type="submit"]:hover { opacity: 0.9; }
 
-.auth-card .auth-link {
+.auth-card .auth-footer {
   text-align: center;
-  margin-top: 16px;
+  margin-top: 28px;
   font-size: 13px;
   color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
-.auth-card .auth-link a {
+.auth-card .auth-switch {
+  background: none;
+  border: none;
   color: var(--teal);
-  text-decoration: none;
+  font-size: 13px;
   font-weight: 600;
+  cursor: pointer;
 }
 
-.auth-card .auth-link a:hover { text-decoration: underline; }
+.auth-card .auth-switch:hover { text-decoration: underline; }
 
 /* ===== Toast ===== */
 .toast-container {

@@ -34,7 +34,7 @@ function AuthPage({ onAuth }) {
           <div className="auth-logo">
             <span className="auth-logo-icon">&#9889;</span>
           </div>
-          <h1>LiveChat</h1>
+          <h1>Nuro</h1>
           <p className="auth-subtitle">{mode === 'login' ? 'Welcome back' : 'Create your account'}</p>
         </div>
 
