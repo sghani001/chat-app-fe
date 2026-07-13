@@ -32,15 +32,10 @@ function DMView({ conversationId, otherUser, user, cable, onMessage }) {
   }
 
   return (
-    <div className="chat-panel">
+    <div className="chat-view">
       <div className="chat-header">
-        <div className="chat-header-left">
-          <div className="dm-avatar-sm" style={{ background: otherUser?.avatar_color || '#8b5cf6' }}>
-            {(otherUser?.name || '?')[0].toUpperCase()}
-          </div>
-          <span className="chat-room-name">{otherUser?.name}</span>
-          <span className="chat-subtitle">Direct Message</span>
-        </div>
+        <div className="chat-header-name">{otherUser?.name}</div>
+        <div className="chat-header-sub">Direct Message</div>
       </div>
       <MessageList messages={messages} activeUser={user} />
       <MessageInput placeholder={`Message @${otherUser?.name}...`} onSend={handleSend} />

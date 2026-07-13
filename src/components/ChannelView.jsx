@@ -32,13 +32,10 @@ function ChannelView({ channelId, channelName, user, cable, onMessage }) {
   }
 
   return (
-    <div className="chat-panel">
+    <div className="chat-view">
       <div className="chat-header">
-        <div className="chat-header-left">
-          <span className="chat-hash">#</span>
-          <span className="chat-room-name">{channelName}</span>
-          <span className="chat-subtitle">Channel</span>
-        </div>
+        <div className="chat-header-name"># {channelName}</div>
+        <div className="chat-header-sub">Channel</div>
       </div>
       <MessageList messages={messages} activeUser={user} />
       <MessageInput placeholder={`Message #${channelName}...`} onSend={handleSend} />

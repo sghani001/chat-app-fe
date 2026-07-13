@@ -9,7 +9,7 @@ function MessageList({ messages, activeUser }) {
 
   if (messages.length === 0) {
     return (
-      <div className="chat-messages">
+      <div className="messages-container">
         <div className="empty-chat">
           <span className="empty-icon">&#128172;</span>
           <p>No messages yet</p>
@@ -19,26 +19,20 @@ function MessageList({ messages, activeUser }) {
   }
 
   return (
-    <div className="chat-messages">
+    <div className="messages-container">
       {messages.map((m, i) => {
         const isMe = m.user?.id === activeUser?.id
         return (
-          <div key={m.id ?? i} className={`msg-row ${isMe ? 'msg-me' : ''}`}>
-            {!isMe && (
-              <div className="msg-avatar-wrap">
-                <div className="msg-avatar" style={{ background: m.user?.avatar_color || '#14b8a6' }}>
-                  {(m.user?.name || '?')[0].toUpperCase()}
-                </div>
-              </div>
-            )}
-            <div className="msg-content-col">
-              {!isMe && <span className="msg-author">{m.user?.name}</span>}
-              <div className={`msg-bubble ${isMe ? 'bubble-me' : 'bubble-other'}`}>
-                {m.content}
-              </div>
-              <span className="msg-time">
+          <div key={m.id ?? i} className={`message ${isMe ? 'own' : ''}`}>
+            <div className="message-avatar" style={{ background: m.user?.avatar_color || 'linear-gradient(135deg, #2dd4bf, #3b82f6)' }}>
+              {(m.user?.name || '?')[0].toUpperCase()}
+            </div>
+            <div className="message-bubble">
+              {!isMe && <div className="message-sender">{m.user?.name}</div>}
+              <div className="message-text">{m.content}</div>
+              <div className="message-time">
                 {m.created_at ? new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
-              </span>
+              </div>
             </div>
           </div>
         )

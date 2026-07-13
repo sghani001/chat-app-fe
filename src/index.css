@@ -1,47 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-  /* Ocean Teal Theme */
-  --bg-0: #060a0f;
-  --bg-1: #0a1018;
-  --bg-2: #0d1521;
-  --bg-3: #111d2e;
-  --bg-card: rgba(13, 21, 33, 0.8);
+  --navy-deep:   #0d1b2a;
+  --navy-teal:   #132a2e;
+  --navy-light:  #1a2f42;
+  --teal:        #2dd4bf;
+  --teal-dim:    rgba(45, 212, 191, 0.12);
+  --blue:        #3b82f6;
+  --blue-dim:    rgba(59, 130, 246, 0.12);
 
-  --teal:       #14b8a6;
-  --teal-dim:   rgba(20, 184, 166, 0.15);
-  --teal-glow:  rgba(20, 184, 166, 0.35);
-  --cyan:       #22d3ee;
-  --cyan-dim:   rgba(34, 211, 238, 0.12);
-  --emerald:    #10b981;
-  --emerald-dim: rgba(16, 185, 129, 0.15);
+  --sidebar-text:   #e8edf2;
+  --sidebar-muted:  #8a9bab;
+  --sidebar-bg:     linear-gradient(160deg, #0d1b2a 0%, #132a2e 100%);
 
-  --amber:  #f59e0b;
-  --red:    #f43f5e;
+  --main-bg:     #f4f6f8;
+  --card-bg:     #ffffff;
+  --card-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
 
-  --border:       rgba(255, 255, 255, 0.06);
-  --border-teal:  rgba(20, 184, 166, 0.2);
+  --text-heading: #1a1a2e;
+  --text-body:    #6b7280;
+  --text-muted:   #9ca3af;
 
-  --text-1: #e2e8f0;
-  --text-2: #94a3b8;
-  --text-3: #4b5f75;
+  --border-light: #e5e7eb;
+  --border-focus: #2dd4bf;
+  --red:          #ef4444;
 
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  color-scheme: dark;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
+  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body, #root {
-  height: 100%;
-  overflow: hidden;
-  background: var(--bg-0);
-  color: var(--text-1);
-}
+html, body, #root { height: 100%; overflow: hidden; }
 
-/* ── Scrollbar ── */
+body { background: var(--main-bg); color: var(--text-body); }
+
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(20,184,166,0.2); border-radius: 9px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(20,184,166,0.4); }
+::-webkit-scrollbar-thumb { background: rgba(45, 212, 191, 0.3); border-radius: 9px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(45, 212, 191, 0.5); }
 
 button, input, textarea { font-family: inherit; }
 button { cursor: pointer; }
+input:focus { outline: none; }

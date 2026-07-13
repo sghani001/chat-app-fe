@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import Sidebar from '../components/Sidebar'
 import ChannelView from '../components/ChannelView'
 import DMView from '../components/DMView'
+import WelcomeScreen from '../components/WelcomeScreen'
 import NotificationBell from '../components/NotificationBell'
 import UserSearchModal from '../components/UserSearchModal'
 import { useCable } from '../hooks/useCable'
@@ -43,9 +44,18 @@ function ChatApp({ user, onLogout }) {
   const fetchConversations = useCallback(async () => {
     try {
       const data = await apiJson('/direct_conversations')
-      setConversations(data)
-      const p = {}
+      const seen = new Map()
       for (const c of data) {
+        const key = c.other_user?.id
+        if (!key) { seen.set(c.id, c); continue }
+        if (!seen.has(key) || new Date(c.updated_at) > new Date(seen.get(key).updated_at)) {
+          seen.set(key, c)
+        }
+      }
+      const unique = Array.from(seen.values())
+      setConversations(unique)
+      const p = {}
+      for (const c of unique) {
         if (c.last_message) p[`dm_${c.id}`] = c.last_message
       }
       setPreviews(prev => ({ ...prev, ...p }))
@@ -127,7 +137,7 @@ function ChatApp({ user, onLogout }) {
         method: 'POST',
         body: JSON.stringify({ user_id: otherUser.id })
       })
-      setConversations(prev => prev.some(c => c.id === convo.id) ? prev : [...prev, convo])
+      setConversations(prev => prev.some(c => c.other_user?.id === convo.other_user?.id) ? prev.map(c => c.other_user?.id === convo.other_user?.id ? convo : c) : [...prev, convo])
       handleSelectDM(convo)
       setShowSearch(false)
     } catch (_) {}
@@ -148,7 +158,7 @@ function ChatApp({ user, onLogout }) {
   }, [activeKey, updatePreview, msgToPreview])
 
   return (
-    <div className="app">
+    <div className="app-layout">
       <Sidebar
         user={user}
         channels={channels}
@@ -165,57 +175,48 @@ function ChatApp({ user, onLogout }) {
         onChannelsChange={fetchChannels}
       />
 
-      <main className="main">
-        {activeView?.type === 'channel' ? (
-          <ChannelView
-            key={`ch-${activeView.id}`}
-            channelId={activeView.id}
-            channelName={activeView.name}
-            user={user}
-            cable={cable}
-            onMessage={handleMessageFromView}
-          />
-        ) : activeView?.type === 'dm' ? (
-          <DMView
-            key={`dm-${activeView.id}`}
-            conversationId={activeView.id}
-            otherUser={activeView.otherUser}
-            user={user}
-            cable={cable}
-            onMessage={handleMessageFromView}
-          />
-        ) : (
-          <div className="welcome">
-            <div className="welcome-glyph">&#128172;</div>
-            <h2>Welcome, {user.name}</h2>
-            <p>Select a channel or DM to start chatting</p>
-          </div>
-        )}
-
-        <div className="aws-bar">
-          <span className="aws-bar-label">AWS Services</span>
-          <div className="aws-services">
-            <div className="aws-service">
-              <span className="aws-service-dot" />
-              RDS PostgreSQL
-            </div>
-            <div className="aws-service">
-              <span className="aws-service-dot mock" />
-              SNS Notifications (mock)
-            </div>
-            <div className="aws-service">
-              <span className="aws-service-dot mock" />
-              DynamoDB Archive (mock)
-            </div>
+      <div className="main-panel">
+        <div className="top-bar">
+          <div className="top-bar-actions">
+            <NotificationBell
+              user={user}
+              onNotificationUpdate={handleNotificationUpdate}
+              onNavigate={navigateFromNotification}
+            />
+            <button className="new-chat-btn" onClick={() => setShowSearch(true)}>
+              <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              New Chat
+            </button>
           </div>
         </div>
-      </main>
 
-      <NotificationBell
-        user={user}
-        onNotificationUpdate={handleNotificationUpdate}
-        onNavigate={navigateFromNotification}
-      />
+        <div className="content-area">
+          {activeView?.type === 'channel' ? (
+            <ChannelView
+              key={`ch-${activeView.id}`}
+              channelId={activeView.id}
+              channelName={activeView.name}
+              user={user}
+              cable={cable}
+              onMessage={handleMessageFromView}
+            />
+          ) : activeView?.type === 'dm' ? (
+            <DMView
+              key={`dm-${activeView.id}`}
+              conversationId={activeView.id}
+              otherUser={activeView.otherUser}
+              user={user}
+              cable={cable}
+              onMessage={handleMessageFromView}
+            />
+          ) : (
+            <WelcomeScreen user={user} />
+          )}
+        </div>
+      </div>
 
       {showSearch && (
         <UserSearchModal
@@ -227,9 +228,9 @@ function ChatApp({ user, onLogout }) {
 
       <div className="toast-container">
         {toasts.map(t => (
-          <div key={t.id} className="toast" onClick={() => { navigateFromNotification(t.notifiableType, t.notifiableId); setToasts(prev => prev.filter(x => x.id !== t.id)) }}>
-            <div className="toast-title">{t.title}</div>
-            <div className="toast-body">{t.body}</div>
+          <div key={t.id} className="toast-item" onClick={() => { navigateFromNotification(t.notifiableType, t.notifiableId); setToasts(prev => prev.filter(x => x.id !== t.id)) }}>
+            <span>{t.title}</span>
+            <button className="toast-dismiss" onClick={(e) => { e.stopPropagation(); setToasts(prev => prev.filter(x => x.id !== t.id)) }}>x</button>
           </div>
         ))}
       </div>
