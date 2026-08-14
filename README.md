@@ -1,16 +1,86 @@
-# React + Vite
+# Chat App — Frontend (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React (Vite) client for the Nuro chat app: login/register, channels,
+direct messages, and live notifications over ActionCable.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + Vite 8
+- `@rails/actioncable` / `react-use-websocket` for the WebSocket connection
+- Oxlint for linting
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js (18+ recommended)
+- The Rails API running locally (see `../chat_app/README.md`)
 
-## Expanding the Oxlint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+npm install
+```
+
+## Running
+
+```bash
+npm run dev
+```
+
+Opens on `http://localhost:5173` (Vite's default; check the terminal output
+if that port is taken). API and WebSocket calls are proxied to the Rails
+server via `vite.config.js` — no `.env` needed for local dev.
+
+**Important:** the dev proxy targets are hardcoded to a specific Rails
+port (see the `server.proxy` block in `vite.config.js`). If you run the
+API on a different port, update every `target: 'http://localhost:<port>'`
+entry in that file to match.
+
+## Project structure
+
+```
+src/
+  pages/
+    AuthPage.jsx          # Login / Register
+    ChatApp.jsx            # Protected app shell
+  components/
+    Sidebar.jsx             # Channels list + DM list + user avatar
+    ChannelView.jsx         # Group channel messages
+    DMView.jsx               # Private DM messages
+    MessageList.jsx         # Shared messages renderer
+    MessageInput.jsx        # Shared input + send button
+    NotificationBell.jsx    # Badge + dropdown notification feed
+    UserSearchModal.jsx     # Find users to DM
+    WelcomeScreen.jsx        # Empty-state placeholder
+  hooks/
+    useAuth.js               # Login/register/logout, token management
+    useCable.js               # ActionCable WebSocket hook
+  lib/
+    api.js                    # fetch wrapper with Authorization header
+  App.jsx                    # Router: /auth vs /app
+```
+
+## Auth flow
+
+Token is stored in `localStorage` (`chat_token`) and attached as
+`Authorization: Bearer <token>` on every API call. The WebSocket connects
+as `ws://localhost:<api-port>/cable?token=<token>` (via the dev proxy in
+local dev, so the app itself just points at `/cable`).
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the Vite dev server with HMR |
+| `npm run build` | Production build to `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run Oxlint |
+
+## Production build
+
+```bash
+npm run build
+```
+
+Outputs static assets to `dist/`. Since there's no dev proxy in
+production, point the API base URL at the deployed Rails host (the code
+in `src/lib/api.js` / `src/hooks/useCable.js` is where that's configured).
